@@ -1,43 +1,49 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { TouchableOpacity, Text } from "react-native";
+import { Platform, StyleSheet, Text, TextInput, View } from "react-native";
 
-class CustomButton extends Component {
+
+const styles = StyleSheet.create({
+  fieldLabel : { marginLeft : 10 },
+  textInput : {
+    height : 40, marginLeft : 10, width : "96%", marginBottom : 20,
+    ...Platform.select({ios : { marginTop : 4, paddingLeft : 10, borderRadius : 8,
+        borderColor : "#c0c0c0", borderWidth : 2
+      },
+      android : { }
+    })
+  }
+});
+
+class CustomTextInput extends Component {
   render() {
-    const {text, onPress, buttonStyle, textStyle, width, disabled} = this.props;
-
+    const {
+      label, labelStyle, maxLength, textInputStyle, stateHolder,
+      stateFieldName
+    } = this.props;
     return (
-      <TouchableOpacity
-        style={[
-          {
-            padding: 10, height: 60, borderRadius: 8, margin: 10, width: width,
-            backgroundColor:
-              disabled != null && disabled === "true" ? "#e0e0e0" :
-                "#303656",
-          },
-          buttonStyle
-        ]}
-
-        onPress={ () => { if (disabled == null || disabled === "false") {
-          onPress() } } }
-      >
-        <Text style={ [
-          { fontSize : 20, fontWeight : "bold", color : "#ffffff",
-            textAlign : "center", paddingTop : 8
-          },
-          textStyle
-        ] } >
-          {text}
-        </Text>
-      </TouchableOpacity>
+      <View>
+        <Text style={ [ styles.fieldLabel, labelStyle ] }>{label}</Text>
+        <TextInput maxLength={ maxLength }
+                   onChangeText={ (inText) => stateHolder.setState(
+                     () => {
+                       const obj = { };
+                       obj[stateFieldName] = inText;
+                       return obj;
+                     }
+                   ) }
+                   style={ [ styles.textInput, textInputStyle ] }
+        />
+      </View>
     );
   }
 }
 
-CustomButton.propTypes = {
-  text : PropTypes.string.isRequired, onPress : PropTypes.func.isRequired,
-  buttonStyle : PropTypes.object, textStyle : PropTypes.object,
-  width : PropTypes.string, disabled : PropTypes.string
+CustomTextInput.propTypes = {
+  label : PropTypes.string.isRequired, labelStyle : PropTypes.object,
+  maxLength : PropTypes.number, textInputStyle : PropTypes.object,
+  stateHolder : PropTypes.object.isRequired, stateFieldName : PropTypes.string.isRequired
 };
 
-export default CustomButton;
+export default CustomTextInput;
+
