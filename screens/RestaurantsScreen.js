@@ -5,7 +5,7 @@ import { Alert, AsyncStorage, BackHandler, FlatList, Picker, Platform,
   ScrollView,
   StyleSheet, Text, View
 } from "react-native";
-import { StackNavigator } from "react-navigation";
+import {createStackNavigator} from "react-navigation";
 import { Root, Toast } from "native-base";
 import { Constants } from "expo";
 
@@ -249,10 +249,16 @@ class AddScreen extends React.Component {
   ); }
 }
 
-const RestaurantsScreen = StackNavigator(
-  { ListScreen : { screen : ListScreen }, AddScreen : { screen :
-      AddScreen } },
-  { headerMode : "none", initialRouteName : "ListScreen" }
-);
+
+const RestaurantsScreen = createStackNavigator({
+  ListScreen: {
+    screen: ListScreen,
+  },
+  AddScreen: {
+    screen: AddScreen,
+  },
+
+});
+
 
 exports.RestaurantsScreen = RestaurantsScreen;

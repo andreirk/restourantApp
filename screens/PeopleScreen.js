@@ -5,7 +5,7 @@ import { Alert, AsyncStorage, BackHandler, FlatList, Picker, Platform,
   ScrollView,
   StyleSheet, Text, View
 } from "react-native";
-import { StackNavigator } from "react-navigation";
+import { createStackNavigator } from "react-navigation";
 import { Root, Toast } from "native-base";
 import { Constants } from "expo";
 
@@ -70,8 +70,6 @@ class ListScreen extends React.Component {
       }.bind(this)
     );
   };
-
-
 
   render() {
     return (
@@ -249,10 +247,26 @@ class AddScreen extends React.Component {
   ); }
 }
 
-const PeopleScreen = StackNavigator(
-  { ListScreen : { screen : ListScreen }, AddScreen : { screen :
-      AddScreen } },
-  { headerMode : "none", initialRouteName : "ListScreen" }
-);
+// const PeopleScreen = StackNavigator(
+//   { ListScreen : { screen : ListScreen }, AddScreen : { screen :
+//       AddScreen } },
+//   { headerMode : "none", initialRouteName : "ListScreen" }
+// );
+
+
+const PeopleScreen = createStackNavigator({
+  // For each screen that you can navigate to, create a new entry like this:
+  ListScreen: {
+    // `ProfileScreen` is a React component that will be the main content of the screen.
+    screen: ListScreen,
+    // When `ProfileScreen` is loaded by the StackNavigator, it will be given a `navigation` prop.
+  },
+  AddScreen: {
+    // `ProfileScreen` is a React component that will be the main content of the screen.
+    screen: AddScreen,
+    // When `ProfileScreen` is loaded by the StackNavigator, it will be given a `navigation` prop.
+  },
+
+});
 
 exports.PeopleScreen = PeopleScreen;
